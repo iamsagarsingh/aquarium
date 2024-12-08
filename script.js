@@ -3,9 +3,11 @@ import { fishEntry } from "./fishModule.js";
 const canvas = document.getElementById("aquarium");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  animate();
+}
 
 const f = new Fishes(ctx, fishEntry);
 
@@ -64,4 +66,4 @@ function animate() {
   requestAnimationFrame(animate); // Loop the animation
 }
 
-animate();
+resizeCanvas();
