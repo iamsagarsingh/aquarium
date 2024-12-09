@@ -1,4 +1,5 @@
 import { Fishes } from "./fishes.js";
+import { Grasses } from "./grasses.js";
 import { fishEntry } from "./fishModule.js";
 const canvas = document.getElementById("aquarium");
 const ctx = canvas.getContext("2d");
@@ -7,9 +8,29 @@ function resizeCanvas() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   animate();
+  grassUpdate();
 }
 
 const f = new Fishes(ctx, fishEntry);
+const g = new Grasses(ctx);
+
+const grassBlades = [];
+const grassBladeCount = 20;
+const grassHeight = 200;
+
+function grassUpdate(){
+// Initialize grass blades
+for (let i = 0; i < grassBladeCount; i++) {
+  const x = (canvas.width / grassBladeCount) * i; // Spread evenly across width
+  grassBlades.push({
+    x: x,
+    y: canvas.height - 10, // Bottom of canvas
+    height: grassHeight + Math.random() * 200, // Random heights
+    swayOffset: Math.random() * Math.PI * 2, // Random start angle for sway
+  });
+}}
+
+let time = 0;
 
 function updateFish(fish) {
   let angle, radAg;
@@ -57,7 +78,10 @@ function updateFish(fish) {
 // Animation loop
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-
+  grassBlades.forEach((blade) => {
+    g.drawGrass(blade, time);
+  });
+  time += 0.05;
   fishEntry.forEach((fish) => {
     f.drawFish(fish);
     updateFish(fish);
