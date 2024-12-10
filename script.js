@@ -1,6 +1,7 @@
 import { Fishes } from "./fishes.js";
 import { Grasses } from "./grasses.js";
 import { fishEntry } from "./fishModule.js";
+import { Bubbles } from "./bubbles.js";
 const canvas = document.getElementById("aquarium");
 const ctx = canvas.getContext("2d");
 
@@ -13,7 +14,9 @@ function resizeCanvas() {
 
 const f = new Fishes(ctx, fishEntry);
 const g = new Grasses(ctx);
+const b = new Bubbles(ctx);
 
+// grasses
 const grassBlades = [];
 const grassBladeCount = 20;
 const grassHeight = 200;
@@ -32,6 +35,7 @@ for (let i = 0; i < grassBladeCount; i++) {
 
 let time = 0;
 
+// fishes
 function updateFish(fish) {
   let angle, radAg;
 
@@ -75,9 +79,21 @@ function updateFish(fish) {
   }
 }
 
+// Bubbles
+const bubbleArr = []
+for(let i=0;i<=5;i++){
+  bubbleArr.push({
+    x: Math.random()*canvas.width,
+    y: canvas.height,
+    speed: Math.random()*2 + 1,
+    radius: Math.random()*15 + 10
+  })
+}
+
 // Animation loop
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+  b.drawBubbles(bubbleArr,canvas)
   grassBlades.forEach((blade) => {
     g.drawGrass(blade, time);
   });
