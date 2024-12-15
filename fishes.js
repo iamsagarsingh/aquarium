@@ -34,7 +34,54 @@ function Fishes(ctx, fish) {
     ctx.fillStyle = fish.color;
     ctx.fill();
     ctx.restore();
+
+    // Draw fins (left and right)
+    const finLength = fish.minorAxis / 2;
+
+    //  Left fin
+    ctx.save();
+    ctx.translate(fish.x, fish.y);
+    ctx.rotate(fish.rotate);
+    ctx.beginPath();
+    ctx.moveTo(
+      fish.majorAxis - fish.majorAxis / 6,
+      -fish.majorAxis / 2 + fish.majorAxis / 4
+    ); // Base of the left fin
+    ctx.lineTo(
+      finLength - fish.majorAxis / 3,
+      -fish.minorAxis / 2 - finLength / 2
+    ); // Tip of the left fin
+    ctx.lineTo(
+      -fish.majorAxis + fish.majorAxis,
+      -fish.minorAxis / 2 - finLength - finLength / 2
+    ); // Bottom of the left fin
+    ctx.closePath();
+    ctx.fillStyle = fish.color;
+    ctx.fill();
+    ctx.restore();
+
+    // Right fin
+    ctx.save();
+    ctx.translate(fish.x, fish.y);
+    ctx.rotate(fish.rotate);
+    ctx.beginPath();
+    ctx.moveTo(
+      fish.majorAxis - fish.majorAxis / 6,
+      fish.majorAxis / 2 - fish.majorAxis / 4
+    );
+    ctx.lineTo(
+      finLength - fish.majorAxis / 3,
+      fish.minorAxis / 2 - finLength / 2
+    );
+    ctx.lineTo(
+      -fish.majorAxis + fish.majorAxis,
+      fish.minorAxis / 2 + finLength + finLength / 2
+    );
+    ctx.closePath();
+    ctx.fillStyle = fish.color;
+    ctx.fill();
+    ctx.restore();
   };
 }
 
-export {Fishes}
+export { Fishes };
