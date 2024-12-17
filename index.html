@@ -20,10 +20,22 @@
         background: linear-gradient(to bottom, #5EDFFF, #0077BE, #003B73);
         z-index: 1;
     }
+    #playMusic{
+      position: absolute;
+      top:5px;
+      right:5px;
+      border-radius: 50%;
+      border:none;
+
+    }
   </style>
 </head>
 <body>
   <canvas id="aquarium" width="800" height="400"></canvas>
+  <button id="playMusic">P</button>
+  <audio id="backgroundMusic" loop >
+    <source src="./assets/Whispering Dreams.mp3" type="audio/mpeg">
+  </audio>
   <script type="module" src="script.js"></script>
 </body>
 </html>

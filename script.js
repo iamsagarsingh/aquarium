@@ -90,6 +90,26 @@ for(let i=0;i<=5;i++){
   })
 }
 
+// Music
+const backgroundMusic = document.getElementById("backgroundMusic");
+const music = document.getElementById('playMusic')
+
+music.addEventListener('click',function(e){
+  const status = localStorage.getItem('playing');
+  
+  if(status==="true"){
+    backgroundMusic.pause()
+    localStorage.setItem('playing',false)
+    music.textContent = 'P'
+  }
+  else{
+    backgroundMusic.play()
+    backgroundMusic.volume = 0.01;
+    music.textContent ='S'
+    localStorage.setItem('playing',true)
+  }
+})
+
 // Animation loop
 function animate() {
   ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
