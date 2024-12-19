@@ -42,8 +42,19 @@ let touchX = null;
 let touchY = null;
 let isTouching = false;
 
+// Prevent long-press context menu
+document.addEventListener('contextmenu', function (e) {
+  e.preventDefault();
+});
+
+// Prevent text selection and touch hold behavior
+document.addEventListener('selectstart', function (e) {
+  e.preventDefault();
+});
+
 // Event Listeners for touch
 canvas.addEventListener("touchstart", (e) => {
+  e.preventDefault()
   const touch = e.touches[0];
   touchX = touch.clientX;
   touchY = touch.clientY;
@@ -51,6 +62,7 @@ canvas.addEventListener("touchstart", (e) => {
 });
 
 canvas.addEventListener("touchmove", (e) => {
+  e.preventDefault()
   const touch = e.touches[0];
   touchX = touch.clientX;
   touchY = touch.clientY;
