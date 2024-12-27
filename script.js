@@ -59,6 +59,33 @@ canvas.addEventListener("touchstart", (e) => {
   touchX = touch.clientX;
   touchY = touch.clientY;
   isTouching = true;
+
+  // Check if the touch is on a fish
+  let touchedFish = null;
+
+  for (const fish of fishEntry) {
+    const distance = Math.sqrt(
+      (touchX - fish.x) ** 2 + (touchY - fish.y) ** 2
+    );
+    if (distance < fish.majorAxis) {
+      touchedFish = fish;
+      break;
+    }
+  }
+
+  if (touchedFish) {
+    // Set all fish colors to the touched fish's color
+    for (const fish of fishEntry) {
+      fish.color = touchedFish.color;
+    }
+
+    setTimeout(()=>{
+      for (const fish of fishEntry) {
+        fish.color = fish.originalColor;
+      }
+    },10000)
+  }
+
 });
 
 canvas.addEventListener("touchmove", (e) => {
