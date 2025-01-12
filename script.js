@@ -41,6 +41,13 @@ let time = 0;
 let touchX = null;
 let touchY = null;
 let isTouching = false;
+let doubleTap = false;
+let targetX = null;
+let targetY = null;
+let isCircling = false;
+const circleRadius = 150; // Radius of the circle
+const circleSpeed = 0.03; // Speed of the circular movement
+let lastTap = 0;
 
 // Prevent long-press context menu
 document.addEventListener('contextmenu', function (e) {
@@ -86,6 +93,20 @@ canvas.addEventListener("touchstart", (e) => {
     },10000)
   }
 
+  // double tap counter for circular motion
+  const currentTime = new Date().getTime();
+  const tapGap = currentTime - lastTap;
+  if (tapGap < 300 && tapGap > 0) {
+    // Detected as a double-tap
+    const touch = e.touches[0];
+    const rect = canvas.getBoundingClientRect();
+    targetX = touch.clientX - rect.left;
+    targetY = touch.clientY - rect.top;
+
+    // Trigger double-tap behavior
+    doubleTap=true
+  }
+  lastTap = currentTime;
 });
 
 canvas.addEventListener("touchmove", (e) => {
@@ -101,8 +122,29 @@ canvas.addEventListener("touchend", () => {
   isTouching = false;
 });
 
+// funtion for placing the fishes evenly in circle.
+function startCirclingFishes(targetX, targetY) {
+  // Logic to make fishes move to targetX, targetY and circle
+  isCircling = true;
+  fishEntry.forEach((fish, index) => {
+    fish.angle = (index / fishEntry.length) * 2 * Math.PI; // Distribute fishes evenly on the circle
+  });
+  // make there motion for 5 seconds.
+  setTimeout(()=>{
+    isCircling =false
+    doubleTap = false
+  },5000)
+}
+
 function updateFish(fish) {
-  if (isTouching && touchX !== null && touchY !== null) {
+  if (isCircling && targetX !== null && targetY !== null) {
+    // Move the fish in a circular path around the target point
+    fish.angle += circleSpeed; // Increment the angle
+    fish.x = targetX + circleRadius * Math.cos(fish.angle);
+    fish.y = targetY + circleRadius * Math.sin(fish.angle);
+    fish.rotate = fish.angle + Math.PI / 2; // Rotate the fish to face along the circle
+  }
+  else if (isTouching && touchX !== null && touchY !== null) {
     // Calculate angle to touch point
     const dx = touchX - fish.x;
     const dy = touchY - fish.y;
@@ -112,7 +154,12 @@ function updateFish(fish) {
     if (distance < 5) {
       fish.dx = 0;
       fish.dy = 0;
-      // return;
+    }
+
+    if(doubleTap){
+      fish.dx = targetX;
+      fish.dy = targetY;
+      startCirclingFishes(targetX, targetY);
     }
 
     // Calculate angle to the touch point and move towards it
